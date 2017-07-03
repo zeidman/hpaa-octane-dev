@@ -128,9 +128,14 @@ public class TestDispatcher extends AbstractSafeLoggingAsyncPeriodWork {
 				continue;
 			}
 
-			Boolean needTestResult = client.isTestResultRelevant(
-					ConfigurationService.getModel().getIdentity(), BuildHandlerUtils.getJobCiId(build));
-
+			logger.info("Before needTestResult : " + BuildHandlerUtils.getJobCiId(build));
+			Boolean needTestResult = false;
+			try {
+				needTestResult = client.isTestResultRelevant(ConfigurationService.getModel().getIdentity(), BuildHandlerUtils.getJobCiId(build));
+			} catch (Exception e) {
+				logger.info("Exception in  needTestResult : " + e.getMessage());
+			}
+			logger.info("After  needTestResult : " + needTestResult);
 			if (needTestResult) {
 				try {
 					Long id = null;
